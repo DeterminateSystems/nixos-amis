@@ -7,25 +7,7 @@ on:
   schedule:
     - cron: "0 0 * * 0"
 jobs:
-  build-system:
-    name: Build the system
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: DeterminateSystems/nix-installer-action@main
-        with:
-          flakehub: true
-      - uses: DeterminateSystems/magic-nix-cache-action@main
-        with:
-          use-gha-cache: false
-
-      - run: nix build -L .#topLevels.x86_64-linux.aws
-
   build-ami:
-    needs: build-system
     name: Upload Amazon Image
     runs-on: ubuntu-latest
     permissions:
@@ -44,6 +26,9 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@main
         with:
           flakehub: true
+
+      # note: no magic-nix-cache. The build is nearly trivial, except for the gigantic disk image at the end.
+      # No need to cache that monstrosity.
 
       - run: nix build -L .#diskImages.x86_64-linux.aws
 
