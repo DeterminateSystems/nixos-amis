@@ -22,7 +22,7 @@ jobs:
 
       - run: nix build -L .#topLevels.x86_64-linux.aws
 
-  upload-ami:
+  build-ami:
     needs: build-system
     name: Upload Amazon Image
     runs-on: ubuntu-latest
@@ -33,10 +33,10 @@ jobs:
       matrix:
         release:
           - release-24.05
-          # - nixos-unstable
+        # - nixos-unstable
         system:
           - x86_64-linux
-          #- aarch64-linux
+        #- aarch64-linux
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main
@@ -44,3 +44,32 @@ jobs:
           flakehub: true
 
       - run: nix build -L .#diskImages.x86_64-linux.aws
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::535002876703:role/upload-ami
+          aws-region: us-east-2
+
+      - name: Upload Smoke test AMI
+        id: upload_smoke_test_ami
+        run: |
+          image_ids=$(nix run .#upload-ami -- \
+              --image-info "./result/nix-support/image-info.json" \
+              --prefix "smoketest/" \
+              --s3-bucket "detsys-nixos-images-20240916205705854200000001")
+          echo "image_ids=$image_ids" >> "$GITHUB_OUTPUT"
+
+      - name: Smoke test
+        id: smoke_test
+        # NOTE: make sure smoke test isn't cancelled. Such that instance gets cleaned up.
+        run: |
+          image_ids='${{ steps.upload_smoke_test_ami.outputs.image_ids }}'
+          image_id=$(echo "$image_ids" | jq -r '.["us-east-2"]')
+          nix run .#smoke-test -- --image-id "$image_id"
+
+      - name: Clean up smoke test
+        if: ${{ cancelled() }}
+        run: |
+          image_ids='${{ steps.upload_smoke_test_ami.outputs.image_ids }}'
+          image_id=$(echo "$image_ids" | jq -r '.["us-east-2"]')
+          nix run .#smoke-test -- --image-id "$image_id" --cancel
