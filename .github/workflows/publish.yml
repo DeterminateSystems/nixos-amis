@@ -38,11 +38,6 @@ jobs:
           - x86_64-linux
         #- aarch64-linux
     steps:
-      - uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::535002876703:role/upload-ami
-          aws-region: us-east-2
-
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main
         with:
