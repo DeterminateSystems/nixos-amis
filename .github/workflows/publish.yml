@@ -19,6 +19,8 @@ jobs:
         with:
           flakehub: true
       - uses: DeterminateSystems/magic-nix-cache-action@main
+        with:
+          use-gha-cache: false
 
       - run: nix build -L .#topLevels.x86_64-linux.aws
 
