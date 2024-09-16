@@ -1,0 +1,46 @@
+name: Upload Amazon Images
+permissions:
+  contents: read
+on:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * 0"
+jobs:
+  build-system:
+    name: Build the system
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+        with:
+          flakehub: true
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - run: nix build .#topLevels.x86_64-linux.aws
+
+  upload-ami:
+    needs: build-system
+    name: Upload Amazon Image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    strategy:
+      matrix:
+        release:
+          - release-24.05
+          # - nixos-unstable
+        system:
+          - x86_64-linux
+          #- aarch64-linux
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+        with:
+          flakehub: true
+
+      - run: nix build .#diskImages.x86_64-linux.aws
