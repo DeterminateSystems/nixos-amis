@@ -53,7 +53,7 @@ jobs:
       - name: Upload Smoke test AMI
         id: upload_smoke_test_ami
         run: |
-          image_ids=$(nix run .#upload-ami -- \
+          image_ids=$(nix run github:NixOS/amis#upload-ami -- \
               --image-info "./result/nix-support/image-info.json" \
               --prefix "smoketest/" \
               --s3-bucket "detsys-nixos-images-20240916205705854200000001")
@@ -65,11 +65,11 @@ jobs:
         run: |
           image_ids='${{ steps.upload_smoke_test_ami.outputs.image_ids }}'
           image_id=$(echo "$image_ids" | jq -r '.["us-east-2"]')
-          nix run .#smoke-test -- --image-id "$image_id"
+          nix run github:NixOS/amis#smoke-test -- --image-id "$image_id"
 
       - name: Clean up smoke test
         if: ${{ cancelled() }}
         run: |
           image_ids='${{ steps.upload_smoke_test_ami.outputs.image_ids }}'
           image_id=$(echo "$image_ids" | jq -r '.["us-east-2"]')
-          nix run .#smoke-test -- --image-id "$image_id" --cancel
+          nix run github:NixOS/amis#smoke-test -- --image-id "$image_id" --cancel
