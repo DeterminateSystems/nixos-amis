@@ -43,7 +43,8 @@ jobs:
           image_ids=$(nix run github:NixOS/amis#upload-ami -- \
               --image-info "./result/nix-support/image-info.json" \
               --prefix "smoketest/" \
-              --s3-bucket "detsys-nixos-images-20240916205705854200000001")
+              --s3-bucket "detsys-nixos-images-20240916205705854200000001" \
+              --run-id "${GITHUB_RUN_ID}")
           echo "image_ids=$image_ids" >> "$GITHUB_OUTPUT"
 
       - name: Smoke test
@@ -67,5 +68,6 @@ jobs:
               --image-info "./result/nix-support/image-info.json" \
               --prefix "nixos/" \
               --s3-bucket "detsys-nixos-images-20240916205705854200000001" \
+              --run-id "${GITHUB_RUN_ID}" \
               --copy-to-regions \
               --public
