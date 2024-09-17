@@ -4,6 +4,20 @@ permissions:
 on:
   pull_request:
   workflow_dispatch:
+    inputs:
+      bootstrap_aws:
+        description: "Run initial bootstrapping steps"
+        required: false
+        type: boolean
+        default: false
+      increase_ami_limit:
+        description: |
+          Open support tickets in all applicable regions to raise the limit.
+          Warning: may open duplicate tickets in a region if that region has an existing open ticket.
+        required: false
+        type: boolean
+        default: false
+
   schedule:
     - cron: "0 0 * * 0"
 jobs:
@@ -36,6 +50,48 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::535002876703:role/upload-ami
           aws-region: us-east-2
+
+      - name: Enable all regions
+        timeout-minutes: 30
+        if: ${{ inputs.bootstrap_aws }}
+        run: |
+          while ! nix run .#enable-regions; do
+              echo "retrying in 1m"
+              sleep 60
+          done
+      - name: Wait for all regions to be enabled
+        timeout-minutes: 30
+        if: ${{ inputs.bootstrap_aws }}
+        run: |
+          aws account list-regions --output table
+          while true; do
+              aws account list-regions --region-opt-status-contains ENABLING  --output text > pending
+              if [[ "$(cat pending | wc -l)" -eq 0 ]]; then
+                  echo "done"
+                  break
+              fi
+
+              echo "remaining:"
+              cat pending
+              echo "retry in 1m"
+              sleep 60
+          done
+
+          echo "Final enumeration:"
+          aws account list-regions
+
+      - name: Enable AMI sharing
+        timeout-minutes: 30
+        if: ${{ inputs.bootstrap_aws }}
+        run: |
+          while ! nix run .#disable-image-block-public-access; do
+              echo "retrying in 1m"
+              sleep 60
+          done
+
+      - name: Increase AMI limit
+        if: ${{ inputs.increase_ami_limit }}
+        run: nix run .#request-public-ami-quota-increase -- --desired-value 1000
 
       - name: Upload Smoke test AMI
         id: upload_smoke_test_ami
