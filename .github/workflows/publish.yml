@@ -44,8 +44,6 @@ jobs:
       # note: no magic-nix-cache. The build is nearly trivial, except for the gigantic disk image at the end.
       # No need to cache that monstrosity.
 
-      - run: nix build -L .#diskImages.x86_64-linux.aws
-
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::535002876703:role/upload-ami
@@ -55,7 +53,7 @@ jobs:
         timeout-minutes: 30
         if: ${{ inputs.bootstrap_aws }}
         run: |
-          while ! nix run .#enable-regions; do
+          while ! nix run github:NixOS/amis#enable-regions; do
               echo "retrying in 1m"
               sleep 60
           done
@@ -84,14 +82,16 @@ jobs:
         timeout-minutes: 30
         if: ${{ inputs.bootstrap_aws }}
         run: |
-          while ! nix run .#disable-image-block-public-access; do
+          while ! nix run github:NixOS/amis#disable-image-block-public-access; do
               echo "retrying in 1m"
               sleep 60
           done
 
       - name: Increase AMI limit
         if: ${{ inputs.increase_ami_limit }}
-        run: nix run .#request-public-ami-quota-increase -- --desired-value 1000
+        run: nix run github:NixOS/amis#request-public-ami-quota-increase -- --desired-value 1000
+
+      - run: nix build -L .#diskImages.x86_64-linux.aws
 
       - name: Upload Smoke test AMI
         id: upload_smoke_test_ami
