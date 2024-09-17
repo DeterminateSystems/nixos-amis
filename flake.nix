@@ -1,7 +1,7 @@
 {
     inputs.nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/*.tar.gz";
     inputs.determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/0.1.95.tar.gz";
-    inputs.fh.url = "https://flakehub.com/f/DeterminateSystems/determinate/0.1.16.tar.gz";
+    inputs.fh.url = "https://flakehub.com/f/DeterminateSystems/fh/0.1.16.tar.gz";
 
     outputs = { self, nixpkgs, determinate, fh, ... }: {
         nixosConfigurations.x86_64-linux = nixpkgs.lib.nixosSystem {
