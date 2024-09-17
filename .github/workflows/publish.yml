@@ -32,7 +32,11 @@ jobs:
           role-to-assume: arn:aws:iam::535002876703:role/upload-ami
           aws-region: us-east-2
 
-      - run: nix build -L .#"diskImages.${{ matrix.system }}.aws"
+      - id: build_disk_image
+        run: |
+          nix build -L .#"diskImages.${{ matrix.system }}.aws"
+          suffix=$(readlink ./result | cut -d'/' -f4 | cut -d'-' -f1)
+          echo "suffix=$suffix" >> "$GITHUB_OUTPUT"
 
       - name: Upload Smoke test AMI
         id: upload_smoke_test_ami
@@ -41,7 +45,7 @@ jobs:
               --image-info "./result/nix-support/image-info.json" \
               --prefix "smoketest/" \
               --s3-bucket "detsys-nixos-images-20240916205705854200000001" \
-              --run-id "${GITHUB_RUN_ID}")
+              --run-id '${{ steps.build_disk_image.outputs.suffix }}')
           echo "image_ids=$image_ids" >> "$GITHUB_OUTPUT"
 
       - name: Smoke test
@@ -65,6 +69,6 @@ jobs:
               --image-info "./result/nix-support/image-info.json" \
               --prefix "determinate/nixos/" \
               --s3-bucket "detsys-nixos-images-20240916205705854200000001" \
-              --run-id "${GITHUB_RUN_ID}" \
+              --run-id '${{ steps.build_disk_image.outputs.suffix }}' \
               --copy-to-regions \
               --public
