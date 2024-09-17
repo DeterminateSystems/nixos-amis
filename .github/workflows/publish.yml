@@ -15,12 +15,9 @@ jobs:
       id-token: write
     strategy:
       matrix:
-        release:
-          - release-24.05
-        # - nixos-unstable
         system:
           - x86_64-linux
-        #- aarch64-linux
+          - aarch64-linux
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main
@@ -35,7 +32,7 @@ jobs:
           role-to-assume: arn:aws:iam::535002876703:role/upload-ami
           aws-region: us-east-2
 
-      - run: nix build -L .#diskImages.x86_64-linux.aws
+      - run: nix build -L .#"diskImages.${{ matrix.system }}.aws"
 
       - name: Upload Smoke test AMI
         id: upload_smoke_test_ami
