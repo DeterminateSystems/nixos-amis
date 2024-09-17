@@ -23,6 +23,8 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@main
         with:
           flakehub: true
+          extra-conf: |
+            extra-system-features = kvm
 
       # note: no magic-nix-cache. The build is nearly trivial, except for the gigantic disk image at the end.
       # No need to cache that monstrosity.
