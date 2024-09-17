@@ -26,6 +26,12 @@
                 fh.packages."${system}".default
               ];
             }
+            {
+                systemd.services.amazon-init.path = [
+                    "/run/wrappers"
+                    "/run/current-system/sw"
+                ];
+            }
           ];
         });
 
