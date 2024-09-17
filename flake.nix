@@ -29,10 +29,6 @@
           ];
         });
 
-      topLevels = forAllSystems
-        ({ system, ... }: self.nixosConfigurations.${system}.config.system.build.toplevel
-        );
-
       diskImages = forAllSystems
         ({ system, ... }: {
           aws = self.nixosConfigurations.${system}.config.system.build.amazonImage;
@@ -45,13 +41,6 @@
             The `diskImages` flake output contains derivations that build disk images for various execution environments.
           '';
           inventory = flake-schemas.lib.derivationsInventory "Disk image" false;
-        };
-        nixosTopLevels = {
-          version = 1;
-          doc = ''
-            The `nixosTopLevels` flake output contains the top-level derivation for a NixOS system.
-          '';
-          inventory = flake-schemas.lib.derivationsInventory "NixOS Top level" true;
         };
       };
     };
