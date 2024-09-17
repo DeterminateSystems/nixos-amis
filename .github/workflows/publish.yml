@@ -9,7 +9,7 @@ on:
 jobs:
   build-ami:
     name: Upload Amazon Image
-    runs-on: ${{ matrix.system == 'x86_64-linux' && 'ubuntu-latest' || 'namespace-profile-default-arm64' }}
+    runs-on: ${{ matrix.system == 'x86_64-linux' && 'ubuntu-latest' || 'UbuntuLatest32Cores128GArm' }}
     permissions:
       contents: read
       id-token: write
