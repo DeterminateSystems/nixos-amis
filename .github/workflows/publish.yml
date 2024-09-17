@@ -72,3 +72,9 @@ jobs:
               --run-id '${{ steps.build_disk_image.outputs.suffix }}' \
               --copy-to-regions \
               --public
+      - name: Breakpoint if tests failed
+        if: failure()
+        uses: namespacelabs/breakpoint-action@v0
+        with:
+          duration: 30m
+          authorized-users: grahamc
