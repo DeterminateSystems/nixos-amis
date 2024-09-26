@@ -29,11 +29,6 @@ jobs:
       # note: no magic-nix-cache. The build is nearly trivial, except for the gigantic disk image at the end.
       # No need to cache that monstrosity.
 
-      - uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::535002876703:role/upload-ami
-          aws-region: us-east-2
-
       - run: sudo -i apt install systemd-coredump
 
       - id: build_disk_image
