@@ -47,4 +47,4 @@ jobs:
         uses: namespacelabs/breakpoint-action@v0
         with:
           duration: 30m
-          authorized-users: grahamc
+          authorized-users: edolstra, grahamc
