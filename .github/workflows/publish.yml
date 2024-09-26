@@ -16,7 +16,6 @@ jobs:
     strategy:
       matrix:
         system:
-          - x86_64-linux
           - aarch64-linux
     steps:
       - uses: actions/checkout@v4
