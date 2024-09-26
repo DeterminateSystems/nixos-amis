@@ -28,7 +28,7 @@ jobs:
       # note: no magic-nix-cache. The build is nearly trivial, except for the gigantic disk image at the end.
       # No need to cache that monstrosity.
 
-      - run: sudo -i apt install systemd-coredump
+      - run: sudo -i bash -c 'apt install systemd-coredump; echo ProcessSizeMax=10G >> /etc/systemd/coredump.conf; systemctl daemon-reload; systemctl restart systemd-coredump.socket'
 
       - id: build_disk_image
         run: |
