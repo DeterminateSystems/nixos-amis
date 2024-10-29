@@ -22,7 +22,7 @@ jobs:
       - uses: DeterminateSystems/magic-nix-cache-action@main
       - name: Check Nix formatting
         run: |
-          nixpkgs-fmt flake.nix
+          nix develop --command nixpkgs-fmt --check flake.nix
       - name: nix flake check
         run: |
           nix flake check --all-systems
