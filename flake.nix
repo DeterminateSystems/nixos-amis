@@ -21,13 +21,13 @@
     in
     {
       nixosConfigurations = forAllSystems ({ system, pkgs, lib, ... }: lib.nixosSystem {
-        system = system;
+        inherit system;
         modules = [
           "${inputs.nixpkgs}/nixos/maintainers/scripts/ec2/amazon-image.nix"
           inputs.determinate.nixosModules.default
           {
             environment.systemPackages = [
-              inputs.fh.packages."${system}".default
+              inputs.fh.packages.${system}.default
             ];
           }
           {
@@ -46,10 +46,13 @@
       devShells = forAllSystems ({ pkgs, system, ... }: {
         default = pkgs.mkShell {
           packages = [
-            pkgs.smoke-test
             inputs.nixos-amis.packages.${system}.upload-ami
           ];
         };
+      });
+
+      apps = forAllSystems ({ system, ... }: {
+        smoke-test = inputs.nixos-amis.apps.${system}.smoke-test;
       });
 
       schemas = inputs.flake-schemas.schemas // {

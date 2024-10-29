@@ -25,7 +25,7 @@ You can use our official AMI for NixOS in a [Terraform] configuration like this:
 
 ```hcl
 data "aws_ami" "detsys_nixos" {
-  owners      = ["detsys"]
+  owners      = ["535002876703"]
 
   filter {
     name   = "name"
