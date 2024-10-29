@@ -46,6 +46,7 @@
       devShells = forAllSystems ({ pkgs, system, ... }: {
         default = pkgs.mkShell {
           packages = [
+            pkgs.nixpkgs-fmt
             inputs.nixos-amis.packages.${system}.upload-ami
           ];
         };

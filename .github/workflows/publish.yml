@@ -1,12 +1,32 @@
 name: Upload Amazon Images
+
 permissions:
   contents: read
+
 on:
   pull_request:
   workflow_dispatch:
   schedule:
     - cron: "0 0 * * 0"
+
 jobs:
+  nix-checks:
+    name: Basic Nix checks
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - name: Check Nix formatting
+        run: |
+          nixpkgs-fmt flake.nix
+      - name: nix flake check
+        run: |
+          nix flake check --all-systems
+
   build-ami:
     name: Upload NixOS AMI
     runs-on: ${{ matrix.system.runner }}
