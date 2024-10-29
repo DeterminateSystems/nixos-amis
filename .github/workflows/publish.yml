@@ -13,6 +13,8 @@ jobs:
     permissions:
       contents: read
       id-token: write
+    env:
+      s3-bucket: detsys-nixos-images-20240916205705854200000001
     strategy:
       matrix:
         system:
@@ -48,14 +50,14 @@ jobs:
           image_ids=$(nix develop --command upload-ami \
             --image-info "./result/nix-support/image-info.json" \
             --prefix "smoketest/" \
-            --s3-bucket "detsys-nixos-images-20240916205705854200000001" \
+            --s3-bucket "${{ env.s3-bucket }}" \
             --run-id '${{ steps.build_disk_image.outputs.suffix }}')
 
           echo "image_ids=$image_ids" >> "$GITHUB_OUTPUT"
 
       - name: Smoke test
         id: smoke_test
-        # NOTE: make sure smoke test isn't cancelled. Such that instance gets cleaned up.
+        # NOTE: make sure smoke test isn't cancelled so that the instance gets cleaned up
         run: |
           image_ids='${{ steps.upload_smoke_test_ami.outputs.image_ids }}'
           image_id=$(echo "$image_ids" | jq -r '.["us-east-2"]')
@@ -72,12 +74,12 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: |
           nix develop --command upload-ami \
-              --image-info "./result/nix-support/image-info.json" \
-              --prefix "determinate/nixos/" \
-              --s3-bucket "detsys-nixos-images-20240916205705854200000001" \
-              --run-id '${{ steps.build_disk_image.outputs.suffix }}' \
-              --copy-to-regions \
-              --public
+            --image-info "./result/nix-support/image-info.json" \
+            --prefix "determinate/nixos/" \
+            --s3-bucket "detsys-nixos-images-20240916205705854200000001" \
+            --run-id '${{ steps.build_disk_image.outputs.suffix }}' \
+            --copy-to-regions \
+            --public
 
       - name: Breakpoint if tests failed
         if: failure()
