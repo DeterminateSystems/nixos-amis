@@ -55,7 +55,18 @@ To use the most recent AMI, add `most_recent = true` to your data declaration:
 data "aws_ami" "detsys_nixos" {
   most_recent = true
 
-  # Other config
+  most_recent = true
+  owners      = ["535002876703"]
+
+  filter {
+    name   = "name"
+    values = ["determinate/nixos/24.05.*"]
+  }
+
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
 }
 ```
 
