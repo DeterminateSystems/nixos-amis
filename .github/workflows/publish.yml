@@ -23,12 +23,19 @@ jobs:
           fail-mode: true
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/magic-nix-cache-action@main
+
       - name: Check Nix formatting
         run: |
           nix develop --command nixpkgs-fmt --check flake.nix
+
       - name: nix flake check
         run: |
           nix flake check --all-systems
+
+      - name: Check external links in README
+        run: |
+          nix develop --command \
+            lychee README.md
 
   build-ami:
     name: Upload NixOS AMI
