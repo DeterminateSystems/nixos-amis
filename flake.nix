@@ -9,18 +9,22 @@
 
   outputs = { self, ... }@inputs:
     let
-      supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
+      linuxSystems = [ "x86_64-linux" "aarch64-linux" ];
+      allSystems = linuxSystems ++ [ "x86_64-darwin" "aarch64-darwin" ];
 
-      forAllSystems = f: inputs.nixpkgs.lib.genAttrs supportedSystems (system: f {
+      forSystems = systems: f: inputs.nixpkgs.lib.genAttrs systems (system: f {
         inherit system;
         pkgs = import inputs.nixpkgs {
           inherit system;
         };
         lib = inputs.nixpkgs.lib;
       });
+
+      forLinuxSystems = forSystems linuxSystems;
+      forAllSystems = forSystems allSystems;
     in
     {
-      nixosConfigurations = forAllSystems ({ system, pkgs, lib, ... }: lib.nixosSystem {
+      nixosConfigurations = forLinuxSystems ({ system, pkgs, lib, ... }: lib.nixosSystem {
         inherit system;
         modules = [
           "${inputs.nixpkgs}/nixos/maintainers/scripts/ec2/amazon-image.nix"
@@ -39,20 +43,21 @@
         ];
       });
 
-      diskImages = forAllSystems ({ system, ... }: {
+      diskImages = forLinuxSystems ({ system, ... }: {
         aws = self.nixosConfigurations.${system}.config.system.build.amazonImage;
       });
 
       devShells = forAllSystems ({ pkgs, system, ... }: {
         default = pkgs.mkShell {
           packages = [
+            pkgs.lychee
             pkgs.nixpkgs-fmt
             inputs.nixos-amis.packages.${system}.upload-ami
           ];
         };
       });
 
-      apps = forAllSystems ({ system, ... }: {
+      apps = forLinuxSystems ({ system, ... }: {
         smoke-test = inputs.nixos-amis.apps.${system}.smoke-test;
       });
 
