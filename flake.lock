@@ -98,7 +98,7 @@
       },
       "original": {
         "type": "tarball",
-        "url": "https://flakehub.com/f/DeterminateSystems/fh/0.1.16.tar.gz"
+        "url": "https://flakehub.com/f/DeterminateSystems/fh/0.1.%2A.tar.gz"
       }
     },
     "flake-compat": {
@@ -271,6 +271,24 @@
         "url": "https://flakehub.com/f/NixOS/nix/%3D2.24.9"
       }
     },
+    "nixos-amis": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_5"
+      },
+      "locked": {
+        "lastModified": 1729768820,
+        "narHash": "sha256-7Z7V+QblWsPxcP57Y/FNEJIyETWZxYDLIIdvi1GBU9I=",
+        "owner": "NixOS",
+        "repo": "amis",
+        "rev": "d4a56fc853c3223f7e0a90f23205f18f2982a368",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "amis",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1723688146,
@@ -363,16 +381,31 @@
     },
     "nixpkgs_5": {
       "locked": {
-        "lastModified": 1728500571,
-        "narHash": "sha256-dOymOQ3AfNI4Z337yEwHGohrVQb4yPODCW9MDUyAc4w=",
-        "rev": "d51c28603def282a24fa034bcb007e2bcb5b5dd0",
-        "revCount": 635766,
+        "lastModified": 1713532629,
+        "narHash": "sha256-8iwNoSDOCKFnDF7f8XReiztpESA0GyFieKhWAaG7jrw=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "7f62671ffcb37436b3df7d6ae44dfdca9e5a069d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_6": {
+      "locked": {
+        "lastModified": 1729880355,
+        "narHash": "sha256-RP+OQ6koQQLX5nw0NmcDrzvGL8HDLnyXt/jHhL1jwjM=",
+        "rev": "18536bf04cd71abd345f9579158841376fdd0c5a",
+        "revCount": 696981,
         "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/NixOS/nixpkgs/0.2405.635766%2Brev-d51c28603def282a24fa034bcb007e2bcb5b5dd0/019275ca-f862-7c32-ba40-e24d02152b27/source.tar.gz"
+        "url": "https://api.flakehub.com/f/pinned/NixOS/nixpkgs/0.1.696981%2Brev-18536bf04cd71abd345f9579158841376fdd0c5a/0192cc00-028d-731c-91e9-e50f0dd89c03/source.tar.gz"
       },
       "original": {
         "type": "tarball",
-        "url": "https://flakehub.com/f/NixOS/nixpkgs/%2A.tar.gz"
+        "url": "https://flakehub.com/f/NixOS/nixpkgs/0.1.%2A.tar.gz"
       }
     },
     "root": {
@@ -380,7 +413,8 @@
         "determinate": "determinate",
         "fh": "fh",
         "flake-schemas": "flake-schemas",
-        "nixpkgs": "nixpkgs_5"
+        "nixos-amis": "nixos-amis",
+        "nixpkgs": "nixpkgs_6"
       }
     },
     "rust-analyzer-src": {
