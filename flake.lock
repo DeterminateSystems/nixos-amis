@@ -98,7 +98,7 @@
       },
       "original": {
         "type": "tarball",
-        "url": "https://flakehub.com/f/DeterminateSystems/fh/0.1.16.tar.gz"
+        "url": "https://flakehub.com/f/DeterminateSystems/fh/0.1.%2A.tar.gz"
       }
     },
     "flake-compat": {
@@ -281,6 +281,24 @@
         "owner": "NixOS",
         "repo": "amis",
         "rev": "e222ca04f42f94d52b507092ae0576310db86bda",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "amis",
+        "type": "github"
+      }
+    },
+    "nixos-amis": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_5"
+      },
+      "locked": {
+        "lastModified": 1729768820,
+        "narHash": "sha256-7Z7V+QblWsPxcP57Y/FNEJIyETWZxYDLIIdvi1GBU9I=",
+        "owner": "NixOS",
+        "repo": "amis",
+        "rev": "d4a56fc853c3223f7e0a90f23205f18f2982a368",
         "type": "github"
       },
       "original": {

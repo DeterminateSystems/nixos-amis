@@ -1,23 +1,50 @@
 name: Upload Amazon Images
+
 permissions:
   contents: read
+
 on:
   pull_request:
   workflow_dispatch:
   schedule:
     - cron: "0 0 * * 0"
+
 jobs:
-  build-ami:
-    name: Upload Amazon Image
-    runs-on: ${{ matrix.system == 'x86_64-linux' && 'ubuntu-latest' || 'UbuntuLatest32Cores128GArm' }}
+  nix-checks:
+    name: Basic Nix checks
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/flake-checker-action@main
+        with:
+          fail-mode: true
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - name: Check Nix formatting
+        run: |
+          nix develop --command nixpkgs-fmt --check flake.nix
+      - name: nix flake check
+        run: |
+          nix flake check --all-systems
+
+  build-ami:
+    name: Upload NixOS AMI
+    runs-on: ${{ matrix.system.runner }}
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      s3-bucket: detsys-nixos-images-20240916205705854200000001
     strategy:
       matrix:
         system:
-          - x86_64-linux
-          - aarch64-linux
+          - nix-system: x86_64-linux
+            runner: ubuntu-latest
+          - nix-system: aarch64-linux
+            runner: UbuntuLatest32Cores128GArm
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main
@@ -34,49 +61,74 @@ jobs:
           role-to-assume: arn:aws:iam::535002876703:role/upload-ami
           aws-region: us-east-2
 
-      - id: build_disk_image
+      - id: build-disk-image
         run: |
-          nix build -L .#"diskImages.${{ matrix.system }}.aws"
+          nix build -L .#"diskImages.${{ matrix.system.nix-system }}.aws"
           suffix=$(readlink ./result | cut -d'/' -f4 | cut -d'-' -f1)
           echo "suffix=$suffix" >> "$GITHUB_OUTPUT"
 
       - name: Upload Smoke test AMI
-        id: upload_smoke_test_ami
+        id: upload-smoke-test-ami
         run: |
-          image_ids=$(nix run github:NixOS/amis#upload-ami -- \
-              --image-info "./result/nix-support/image-info.json" \
-              --prefix "smoketest/" \
-              --s3-bucket "detsys-nixos-images-20240916205705854200000001" \
-              --run-id '${{ steps.build_disk_image.outputs.suffix }}')
+          image_ids=$(nix develop --command upload-ami \
+            --image-info "./result/nix-support/image-info.json" \
+            --prefix "smoketest/" \
+            --s3-bucket "${{ env.s3-bucket }}" \
+            --run-id '${{ steps.build-disk-image.outputs.suffix }}')
+
           echo "image_ids=$image_ids" >> "$GITHUB_OUTPUT"
 
       - name: Smoke test
-        id: smoke_test
-        # NOTE: make sure smoke test isn't cancelled. Such that instance gets cleaned up.
+        id: smoke-test
+        # NOTE: make sure smoke test isn't cancelled so that the instance gets cleaned up
         run: |
-          image_ids='${{ steps.upload_smoke_test_ami.outputs.image_ids }}'
+          image_ids='${{ steps.upload-smoke-test-ami.outputs.image_ids }}'
           image_id=$(echo "$image_ids" | jq -r '.["us-east-2"]')
-          nix run github:NixOS/amis#smoke-test -- --image-id "$image_id"
+          nix run .#smoke-test -- --image-id "$image_id"
 
       - name: Clean up smoke test
         if: ${{ cancelled() }}
         run: |
-          image_ids='${{ steps.upload_smoke_test_ami.outputs.image_ids }}'
+          image_ids='${{ steps.upload-smoke-test-ami.outputs.image_ids }}'
           image_id=$(echo "$image_ids" | jq -r '.["us-east-2"]')
-          nix run github:NixOS/amis#smoke-test -- --image-id "$image_id" --cancel
+          nix run .#smoke-test -- --image-id "$image_id" --cancel
+
       - name: Upload AMIs to all available regions
         if: github.ref == 'refs/heads/main'
         run: |
-          nix run github:NixOS/amis#upload-ami -- \
-              --image-info "./result/nix-support/image-info.json" \
-              --prefix "determinate/nixos/" \
-              --s3-bucket "detsys-nixos-images-20240916205705854200000001" \
-              --run-id '${{ steps.build_disk_image.outputs.suffix }}' \
-              --copy-to-regions \
-              --public
+          nix develop --command upload-ami \
+            --image-info "./result/nix-support/image-info.json" \
+            --prefix "determinate/nixos/" \
+            --s3-bucket "detsys-nixos-images-20240916205705854200000001" \
+            --run-id '${{ steps.build-disk-image.outputs.suffix }}' \
+            --copy-to-regions \
+            --public
+
       - name: Breakpoint if tests failed
         if: failure()
         uses: namespacelabs/breakpoint-action@v0
         with:
           duration: 30m
           authorized-users: grahamc
+
+  cache-dev-environment:
+    name: Cache Nix development environment in FlakeHub Cache
+    runs-on: ${{ matrix.system.runner }}
+    permissions:
+      contents: read
+      id-token: write
+    strategy:
+      matrix:
+        system:
+          - nix-system: x86_64-linux
+            runner: ubuntu-latest
+          - nix-system: aarch64-linux
+            runner: UbuntuLatest32Cores128GArm
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+        with:
+          flakehub: true
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - run: |
+          nix build .#devShells.${{ matrix.system.nix-system }}.default
