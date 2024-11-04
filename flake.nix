@@ -47,11 +47,12 @@
         aws = self.nixosConfigurations.${system}.config.system.build.amazonImage;
       });
 
-      devShells = forAllSystems ({ pkgs, system, ... }: {
+      devShells = forAllSystems ({ system, pkgs, lib, ... }: {
         default = pkgs.mkShell {
           packages = [
             pkgs.lychee
             pkgs.nixpkgs-fmt
+          ] ++ lib.optionals (builtins.elem system linuxSystems) [
             inputs.nixos-amis.packages.${system}.upload-ami
           ];
         };
