@@ -54,6 +54,11 @@ jobs:
         uses: ./.github/actions/actions-oidc-debugger
         with:
           audience: https://flakehub.com
+      - uses: aws-actions/configure-aws-credentials@v4
+        if: github.event_name == 'merge_group' || github.event_name == 'push'
+        with:
+          role-to-assume: arn:aws:iam::535002876703:role/upload-ami
+          aws-region: us-east-2
 
   build-ami:
     name: Upload NixOS AMI
