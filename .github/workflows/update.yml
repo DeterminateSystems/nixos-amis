@@ -1,0 +1,22 @@
+name: Update Flake Lock
+
+permissions:
+  contents: read
+
+on:
+  schedule:
+  - cron: "0 0 * * *"
+
+jobs:
+  update-flake-lock:
+    name: Update Flake Lock
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/update-flake-lock@main
+        with:
+          token: ${{ secrets.DETSYS_PR_BOT_TOKEN }}
