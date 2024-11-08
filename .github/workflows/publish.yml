@@ -105,7 +105,7 @@ jobs:
           nix run .#smoke-test -- --image-id "$image_id" --cancel
 
       - name: Upload AMIs to all available regions
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           nix develop --command upload-ami \
             --image-info "./result/nix-support/image-info.json" \
