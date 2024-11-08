@@ -37,6 +37,24 @@ jobs:
           nix develop --command \
             lychee README.md
 
+  debug-oidc:
+    name: debug-oidc
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout actions-oidc-debugger
+        uses: actions/checkout@v3
+        with:
+          repository: github/actions-oidc-debugger
+          ref: main
+          path: ./.github/actions/actions-oidc-debugger
+      - name: Debug OIDC Claims
+        uses: ./.github/actions/actions-oidc-debugger
+        with:
+          audience: https://flakehub.com
+
   build-ami:
     name: Upload NixOS AMI
     runs-on: ${{ matrix.system.runner }}
