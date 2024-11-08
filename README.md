@@ -1,5 +1,7 @@
 # Determinate Systems NixOS AMIs
 
+## Overview
+
 This repo houses the build logic for [Determinate Systems][detsys]' official [Amazon Machine Images (AMIs)][ami] for [NixOS].
 Our AMIs are available for these systems:
 
@@ -29,6 +31,11 @@ On both systems, the AMIs have these tools installed:
   fh apply nixos "my-org/my-flake/*#nixosConfigurations.my-nixos-configuration-output"
   ```
 
+## Changelog
+
+# epoch-1 (beta)
+This is an initial, preview, beta version of Determinate AMIs.
+
 ## Terraform
 
 You can use our official AMI for NixOS in a [Terraform] configuration like this:
@@ -39,7 +46,7 @@ data "aws_ami" "detsys_nixos" {
 
   filter {
     name   = "name"
-    values = ["determinate/nixos/24.05.*"]
+    values = ["determinate/nixos/epoch-1/24.05.*"]
   }
 
   filter {
@@ -60,7 +67,7 @@ data "aws_ami" "detsys_nixos" {
 
   filter {
     name   = "name"
-    values = ["determinate/nixos/24.05.*"]
+    values = ["determinate/nixos/epoch-1/24.05.*"]
   }
 
   filter {
