@@ -24,6 +24,9 @@
       forAllSystems = forSystems allSystems;
     in
     {
+      # Update this, and the changelog *and* usage examples in the README, for breaking changes to the AMIs
+      epoch = builtins.toString 1;
+
       nixosConfigurations = forLinuxSystems ({ system, pkgs, lib, ... }: lib.nixosSystem {
         inherit system;
         modules = [

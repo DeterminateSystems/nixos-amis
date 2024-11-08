@@ -107,9 +107,11 @@ jobs:
       - name: Upload AMIs to all available regions
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
+          epoch="$(nix eval --raw .#epoch)"
+          prefix="determinate/nixos/epoch-${epoch}"
           nix develop --command upload-ami \
             --image-info "./result/nix-support/image-info.json" \
-            --prefix "determinate/nixos/" \
+            --prefix "${prefix}" \
             --s3-bucket "detsys-nixos-images-20240916205705854200000001" \
             --run-id '${{ steps.build-disk-image.outputs.suffix }}' \
             --copy-to-regions \
