@@ -102,9 +102,11 @@ jobs:
         if: github.event_name == 'merge_group' || github.event_name == 'push'
         id: upload-smoke-test-ami
         run: |
+          epoch="$(nix eval --raw .#epoch)"
+          prefix="smoketest/epoch-${epoch}/"
           image_ids=$(nix develop --command upload-ami \
             --image-info "./result/nix-support/image-info.json" \
-            --prefix "smoketest/" \
+            --prefix "${prefix}" \
             --s3-bucket "${{ env.s3-bucket }}" \
             --run-id '${{ steps.build-disk-image.outputs.suffix }}')
 
