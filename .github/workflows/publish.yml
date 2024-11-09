@@ -41,6 +41,7 @@ jobs:
         if: github.event_name == 'merge_group' || github.event_name == 'push'
         with:
           role-to-assume: arn:aws:iam::535002876703:role/upload-ami
+          audience: sts.amazonaws.com+${{ github.event_name }}
           aws-region: us-east-2
 
   build-ami:
