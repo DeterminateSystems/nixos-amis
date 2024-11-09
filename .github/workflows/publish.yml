@@ -85,11 +85,3 @@ jobs:
     steps:
       - run: |
           echo lol
-
-  block-final-merge-while-debug:
-    name: Block Merge
-    runs-on: ubuntu-latest
-    if: github.event_name == 'merge_group'
-    steps:
-      - run: |
-          sleep 1000000
