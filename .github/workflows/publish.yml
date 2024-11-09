@@ -37,6 +37,8 @@ jobs:
         uses: ./.github/actions/actions-oidc-debugger
         with:
           audience: https://flakehub.com
+      - run: |
+          echo "about to try assume role with token with aud=sts.amazonaws.com+${{ github.event_name }}"
       - uses: aws-actions/configure-aws-credentials@v4
         if: github.event_name == 'merge_group' || github.event_name == 'push'
         with:
