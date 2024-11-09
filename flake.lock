@@ -276,24 +276,6 @@
         "nixpkgs": "nixpkgs_5"
       },
       "locked": {
-        "lastModified": 1730636975,
-        "narHash": "sha256-7zgippkcqet37ayC3S7VL7i7Et7Wpuz0GsOjQN6V5+M=",
-        "owner": "NixOS",
-        "repo": "amis",
-        "rev": "e222ca04f42f94d52b507092ae0576310db86bda",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "repo": "amis",
-        "type": "github"
-      }
-    },
-    "nixos-amis": {
-      "inputs": {
-        "nixpkgs": "nixpkgs_5"
-      },
-      "locked": {
         "lastModified": 1729768820,
         "narHash": "sha256-7Z7V+QblWsPxcP57Y/FNEJIyETWZxYDLIIdvi1GBU9I=",
         "owner": "NixOS",
@@ -414,16 +396,18 @@
     },
     "nixpkgs_6": {
       "locked": {
-        "lastModified": 1730531603,
-        "narHash": "sha256-Dqg6si5CqIzm87sp57j5nTaeBbWhHFaVyG7V6L8k3lY=",
-        "rev": "7ffd9ae656aec493492b44d0ddfb28e79a1ea25d",
-        "revCount": 702572,
-        "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/NixOS/nixpkgs/0.1.702572%2Brev-7ffd9ae656aec493492b44d0ddfb28e79a1ea25d/0192f105-e66b-7e63-b374-c8d63b77ea45/source.tar.gz"
+        "lastModified": 1731122155,
+        "narHash": "sha256-kS/FbbDnrtmXl3fLGAUiWpLBJYF6S2glnugVLWMjkPQ=",
+        "owner": "DeterminateSystems",
+        "repo": "nixpkgs",
+        "rev": "f429e17f022e9c0430fa13d42433dfa2d27eef84",
+        "type": "github"
       },
       "original": {
-        "type": "tarball",
-        "url": "https://flakehub.com/f/NixOS/nixpkgs/0.1.%2A.tar.gz"
+        "owner": "DeterminateSystems",
+        "ref": "colemickens/ec2",
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "root": {
