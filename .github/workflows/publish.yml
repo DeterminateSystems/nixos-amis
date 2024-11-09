@@ -133,7 +133,7 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           epoch="$(nix eval --raw .#epoch)"
-          prefix="determinate/nixos/epoch-${epoch}"
+          prefix="determinate/nixos/epoch-${epoch}/"
           nix develop --command upload-ami \
             --image-info "./result/nix-support/image-info.json" \
             --prefix "${prefix}" \
