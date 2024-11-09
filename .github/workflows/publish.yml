@@ -17,8 +17,25 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - run: |
-          echo foo
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/flake-checker-action@main
+        with:
+          fail-mode: true
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Check Nix formatting
+        run: |
+          nix develop --command nixpkgs-fmt --check flake.nix
+
+      - name: nix flake check
+        run: |
+          nix flake check --all-systems
+
+      - name: Check external links in README
+        run: |
+          nix develop --command \
+            lychee README.md
 
   debug-oidc:
     name: debug-oidc
@@ -66,8 +83,62 @@ jobs:
           extra-conf: |
             extra-system-features = kvm
 
-      - run: |
-          echo lol
+      # note: no magic-nix-cache. The build is nearly trivial, except for the gigantic disk image at the end.
+      # No need to cache that monstrosity.
+
+      - id: build-disk-image
+        run: |
+          nix build -L .#"diskImages.${{ matrix.system.nix-system }}.aws"
+          suffix=$(readlink ./result | cut -d'/' -f4 | cut -d'-' -f1)
+          echo "suffix=$suffix" >> "$GITHUB_OUTPUT"
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        if: github.event_name == 'merge_group' || github.event_name == 'push'
+        with:
+          role-to-assume: arn:aws:iam::535002876703:role/upload-ami
+          aws-region: us-east-2
+
+      - name: Upload Smoke test AMI
+        if: github.event_name == 'merge_group' || github.event_name == 'push'
+        id: upload-smoke-test-ami
+        run: |
+          image_ids=$(nix develop --command upload-ami \
+            --image-info "./result/nix-support/image-info.json" \
+            --prefix "smoketest/" \
+            --s3-bucket "${{ env.s3-bucket }}" \
+            --run-id '${{ steps.build-disk-image.outputs.suffix }}')
+
+          echo "image_ids=$image_ids" >> "$GITHUB_OUTPUT"
+
+      - name: Smoke test
+        if: github.event_name == 'merge_group' || github.event_name == 'push'
+        id: smoke-test
+        # NOTE: make sure smoke test isn't cancelled so that the instance gets cleaned up
+        run: |
+          image_ids='${{ steps.upload-smoke-test-ami.outputs.image_ids }}'
+          image_id=$(echo "$image_ids" | jq -r '.["us-east-2"]')
+          nix run .#smoke-test -- --image-id "$image_id"
+
+      - name: Clean up smoke test
+        # NOTE(colemickens): NixOS/amis#smoke-test has a finally to teardown instance, this is workflow-cancellation protection
+        if: ${{ cancelled() && (github.event_name == 'merge_group' || github.event_name == 'push') }}
+        run: |
+          image_ids='${{ steps.upload-smoke-test-ami.outputs.image_ids }}'
+          image_id=$(echo "$image_ids" | jq -r '.["us-east-2"]')
+          nix run .#smoke-test -- --image-id "$image_id" --cancel
+
+      - name: Upload AMIs to all available regions
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          epoch="$(nix eval --raw .#epoch)"
+          prefix="determinate/nixos/epoch-${epoch}"
+          nix develop --command upload-ami \
+            --image-info "./result/nix-support/image-info.json" \
+            --prefix "${prefix}" \
+            --s3-bucket "detsys-nixos-images-20240916205705854200000001" \
+            --run-id '${{ steps.build-disk-image.outputs.suffix }}' \
+            --copy-to-regions \
+            --public
 
   cache-dev-environment:
     name: Cache Nix development environment in FlakeHub Cache
@@ -83,13 +154,10 @@ jobs:
           - nix-system: aarch64-linux
             runner: UbuntuLatest32Cores128GArm
     steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+        with:
+          flakehub: true
+      - uses: DeterminateSystems/magic-nix-cache-action@main
       - run: |
-          echo lol
-
-  block-final-merge-while-debug:
-    name: Block Merge
-    runs-on: ubuntu-latest
-    if: github.event_name == 'merge_group'
-    steps:
-      - run: |
-          sleep 1000000
+          nix build .#devShells.${{ matrix.system.nix-system }}.default
