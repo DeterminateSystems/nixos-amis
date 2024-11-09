@@ -35,6 +35,7 @@
           {
             environment.systemPackages = [
               inputs.fh.packages.${system}.default
+              pkgs.git
             ];
           }
           {
