@@ -395,11 +395,11 @@
     },
     "nixpkgs_6": {
       "locked": {
-        "lastModified": 1732237046,
-        "narHash": "sha256-OspNYf40dhI3nA+AUIOTX1yeCovyla/yS1nlk26xG6U=",
+        "lastModified": 1733964348,
+        "narHash": "sha256-j9gKgRX/J8yy+mjWefniRDFskrlPJn8YqOoUbALU964=",
         "owner": "DeterminateSystems",
         "repo": "nixpkgs",
-        "rev": "5dff3c86ecbd16e60c7217e244aafa72d7036707",
+        "rev": "6215e1e89982a07cd05e4881fa08c379c6d68e2a",
         "type": "github"
       },
       "original": {
