@@ -38,12 +38,6 @@
               pkgs.git
             ];
           }
-          {
-            systemd.services.amazon-init.path = [
-              "/run/wrappers"
-              "/run/current-system/sw"
-            ];
-          }
         ];
       });
 
