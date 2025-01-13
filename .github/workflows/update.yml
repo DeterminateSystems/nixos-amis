@@ -22,7 +22,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main
-      - run: ./.github/update-nixpkgs.sh
       - uses: DeterminateSystems/update-flake-lock@main
         with:
           token: ${{ secrets.DETSYS_PR_BOT_TOKEN }}
+
+    # TODO: notify discord channel of new PR
