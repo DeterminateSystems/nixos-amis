@@ -7,7 +7,6 @@ on:
   schedule:
   - cron: "0 0 * * *"
   workflow_dispatch:
-  push: # TODO: remove before merge
 
 env:
   GH_TOKEN: ${{ secrets.DETSYS_PR_BOT_TOKEN }}
@@ -25,5 +24,3 @@ jobs:
       - uses: DeterminateSystems/update-flake-lock@main
         with:
           token: ${{ secrets.DETSYS_PR_BOT_TOKEN }}
-
-    # TODO: notify discord channel of new PR
