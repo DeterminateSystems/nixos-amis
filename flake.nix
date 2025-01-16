@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "https://flakehub.com/f/nixos/nixpkgs/*";
+    nixpkgs.url = "https://flakehub.com/f/nixos/nixpkgs/0.1.*";
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/0.1.*.tar.gz";
     fh.url = "https://flakehub.com/f/DeterminateSystems/fh/0.1.*";
     flake-schemas.url = "https://flakehub.com/f/DeterminateSystems/flake-schemas/0.1.5";
