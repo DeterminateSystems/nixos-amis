@@ -37,29 +37,6 @@ jobs:
           nix develop --command \
             lychee README.md
 
-  debug-oidc:
-    name: debug-oidc
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
-    steps:
-      - name: Checkout actions-oidc-debugger
-        uses: actions/checkout@v3
-        with:
-          repository: github/actions-oidc-debugger
-          ref: main
-          path: ./.github/actions/actions-oidc-debugger
-      - name: Debug OIDC Claims
-        uses: ./.github/actions/actions-oidc-debugger
-        with:
-          audience: https://flakehub.com
-      - uses: aws-actions/configure-aws-credentials@v4
-        if: github.event_name == 'merge_group' || github.event_name == 'push'
-        with:
-          role-to-assume: arn:aws:iam::535002876703:role/upload-ami
-          aws-region: us-east-2
-
   build-ami:
     name: Upload NixOS AMI
     runs-on: ${{ matrix.system.runner }}
@@ -163,3 +140,18 @@ jobs:
       - uses: DeterminateSystems/magic-nix-cache-action@main
       - run: |
           nix build .#devShells.${{ matrix.system.nix-system }}.default
+
+  notify-for-update-prs:
+    name: Notify Discord for update_flake_lock_action PRs
+    runs-on: ubuntu-latest
+    needs:
+      - nix-checks
+      - build-ami
+    if: always() && github.head_ref == 'update_flake_lock_action'
+    steps:
+      - name: Notify
+        uses: rjstone/discord-webhook-notify@v1
+        with:
+          severity: info
+          details: NixOS AMIs Update - ${{ needs.build-ami.result }}
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
