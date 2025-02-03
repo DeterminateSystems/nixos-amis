@@ -96,7 +96,9 @@ jobs:
         run: |
           image_ids='${{ steps.upload-smoke-test-ami.outputs.image_ids }}'
           image_id=$(echo "$image_ids" | jq -r '.["us-east-2"]')
-          nix run .#smoke-test -- --image-id "$image_id"
+          nix run .#smoke-test -- \
+            --image-id "$image_id" \
+            --run-id "${{ github.run_id }}-${{ github.run_attempt }}"
 
       - name: Clean up smoke test
         # NOTE(colemickens): NixOS/amis#smoke-test has a finally to teardown instance, this is workflow-cancellation protection
@@ -104,7 +106,10 @@ jobs:
         run: |
           image_ids='${{ steps.upload-smoke-test-ami.outputs.image_ids }}'
           image_id=$(echo "$image_ids" | jq -r '.["us-east-2"]')
-          nix run .#smoke-test -- --image-id "$image_id" --cancel
+          nix run .#smoke-test -- \
+            --image-id "$image_id" \
+            --run-id "${{ github.run_id }}-${{ github.run_attempt }}" \
+            --cancel
 
       - name: Upload AMIs to all available regions
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
