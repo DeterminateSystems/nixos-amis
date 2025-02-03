@@ -33,8 +33,8 @@ On both systems, the AMIs have these tools installed:
 
 ## Changelog
 
-# epoch-1 (beta)
-This is an initial, preview, beta version of Determinate AMIs.
+# epoch-1
+This is an initial version of Determinate AMIs.
 
 ## Terraform
 
@@ -42,32 +42,13 @@ You can use our official AMI for NixOS in a [Terraform] configuration like this:
 
 ```hcl
 data "aws_ami" "detsys_nixos" {
-  owners = ["535002876703"]
-
-  filter {
-    name   = "name"
-    values = ["determinate/nixos/epoch-1/24.05.*"]
-  }
-
-  filter {
-    name   = "architecture"
-    values = ["x86_64"]
-  }
-}
-```
-
-To use the most recent AMI, add `most_recent = true` to your data declaration:
-
-```hcl
-data "aws_ami" "detsys_nixos" {
   most_recent = true
 
-  most_recent = true
   owners      = ["535002876703"]
 
   filter {
     name   = "name"
-    values = ["determinate/nixos/epoch-1/24.05.*"]
+    values = ["determinate/nixos/epoch-1/24.11.*"]
   }
 
   filter {
