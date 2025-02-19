@@ -48,7 +48,7 @@ data "aws_ami" "detsys_nixos" {
 
   filter {
     name   = "name"
-    values = ["determinate/nixos/epoch-1/24.11.*"]
+    values = ["determinate/nixos/epoch-1/*"]
   }
 
   filter {
