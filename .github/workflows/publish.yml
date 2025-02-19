@@ -37,6 +37,13 @@ jobs:
           nix develop --command \
             lychee README.md
 
+      - name: check image label
+        run: |
+          label="$(nix eval --raw .#nixosConfigurations.x86_64-linux.config.system.nixos.label)"
+          echo "checking label '$label'..."
+          set -x
+          echo "${label}" | grep -E '^[0-9][0-9]\.[0-9][0-9]\..*';
+
   build-ami:
     name: Upload NixOS AMI
     runs-on: ${{ matrix.system.runner }}
