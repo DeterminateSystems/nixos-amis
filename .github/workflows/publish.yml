@@ -121,7 +121,7 @@ jobs:
             --image-info "./result/nix-support/image-info.json" \
             --prefix "${prefix}" \
             --s3-bucket "detsys-nixos-images-20240916205705854200000001" \
-            --run-id '${{ steps.build-disk-image.outputs.suffix }}' \
+            --run-id "${{ github.run_id }}-${{ github.run_attempt }}" \
             --copy-to-regions \
             --public
 
