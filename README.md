@@ -1,4 +1,4 @@
-# Determinate Systems NixOS AMIs
+# NixOS with Determinate Nix AMIs
 
 ## Overview
 
@@ -34,7 +34,7 @@ On both systems, the AMIs have these tools installed:
 ## Changelog
 
 # epoch-1
-This is an initial version of Determinate AMIs.
+This is an initial version of NixOS with Determinate Nix AMIs.
 
 ## Terraform
 
