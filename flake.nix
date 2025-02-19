@@ -39,6 +39,16 @@
               inputs.fh.packages.${system}.default
               pkgs.git
             ];
+
+            assertions =
+              [{
+                assertion = ((
+                  builtins.match
+                    "^[0-9][0-9]\.[0-9][0-9]\..*"
+                    config.system.nixos.label
+                ) != null);
+                message = "nixos image label is incorrect";
+              }];
           })
         ];
       });
