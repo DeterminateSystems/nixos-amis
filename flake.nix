@@ -32,12 +32,14 @@
         modules = [
           "${inputs.nixpkgs}/nixos/maintainers/scripts/ec2/amazon-image.nix"
           inputs.determinate.nixosModules.default
-          {
+          ({ config, ... }: {
+
+            system.nixos.tags = lib.mkForce [ ];
             environment.systemPackages = [
               inputs.fh.packages.${system}.default
               pkgs.git
             ];
-          }
+          })
         ];
       });
 
