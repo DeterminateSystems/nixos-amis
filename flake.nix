@@ -40,6 +40,8 @@
               pkgs.git
             ];
 
+            virtualisation.diskSize = lib.mkForce (4 * 1024);
+
             assertions =
               [{
                 assertion = ((
