@@ -22,7 +22,7 @@ jobs:
         with:
           fail-mode: false
       - uses: DeterminateSystems/nix-installer-action@main
-      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: DeterminateSystems/flakehub-cache-action@main
 
       - name: Check Nix formatting
         run: |
@@ -152,7 +152,7 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@main
         with:
           flakehub: true
-      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: DeterminateSystems/flakehub-cache-action@main
       - run: |
           nix build .#devShells.${{ matrix.system.nix-system }}.default
 
