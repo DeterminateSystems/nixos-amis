@@ -18,10 +18,15 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v4
+
       - uses: DeterminateSystems/flake-checker-action@main
         with:
           fail-mode: false
+
       - uses: DeterminateSystems/nix-installer-action@main
+        with:
+          determinate: true
+
       - uses: DeterminateSystems/flakehub-cache-action@main
 
       - name: Check Nix formatting
@@ -65,7 +70,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main
         with:
-          flakehub: true
+          determinate: true
           extra-conf: |
             extra-system-features = kvm
 
@@ -151,7 +156,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main
         with:
-          flakehub: true
+          determinate: true
       - uses: DeterminateSystems/flakehub-cache-action@main
       - run: |
           nix build .#devShells.${{ matrix.system.nix-system }}.default

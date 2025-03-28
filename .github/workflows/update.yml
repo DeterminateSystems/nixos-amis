@@ -21,6 +21,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main
+        with:
+          determinate: true
       - uses: DeterminateSystems/update-flake-lock@main
         with:
           token: ${{ secrets.DETSYS_PR_BOT_TOKEN }}
