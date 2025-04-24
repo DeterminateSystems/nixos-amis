@@ -1,14 +1,12 @@
 # NixOS with Determinate Nix AMIs
 
-## Overview
-
 This repo houses the build logic for [Determinate Systems][detsys]' official [Amazon Machine Images (AMIs)][ami] for [NixOS].
 Our AMIs are available for these systems:
 
-System      | Nix system name
-:-----------|:---------------
-AMD64 Linux | `x86_64-linux`
-ARM64 Linux | `aarch64-linux`
+| System      | Nix system name |
+| :---------- | :-------------- |
+| AMD64 Linux | `x86_64-linux`  |
+| ARM64 Linux | `aarch64-linux` |
 
 On both systems, the AMIs have these tools installed:
 
@@ -31,12 +29,24 @@ On both systems, the AMIs have these tools installed:
   fh apply nixos "my-org/my-flake/*#nixosConfigurations.my-nixos-configuration-output"
   ```
 
+## Example
+
+For a detailed example of deploying NixOS systems to [EC2] using the Determinate Nix AMIs, see our [demo] repo.
+
 ## Changelog
 
-# epoch-1
+### epoch-1
+
 This is an initial version of NixOS with Determinate Nix AMIs.
 
-## Terraform
+## Deployment
+
+You can deploy [EC2] instances based on the Determinate Nix AMIs using a variety of tools, such as [Terraform](#terraform).
+
+### Terraform
+
+> [!SUCCESS]
+> The Terraform configuration below is compatible with [OpenTofu] as well.
 
 You can use our official AMI for NixOS in a [Terraform] configuration like this:
 
@@ -61,14 +71,18 @@ data "aws_ami" "detsys_nixos" {
 [ami]: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html
 [fh-apply-nixos]: https://docs.determinate.systems/flakehub/cli#apply-nixos
 [cache]: https://docs.determinate.systems/flakehub/cache
+[demo]: https://github.com/determinatesystems/demo
 [det-nix]: https://docs.determinate.systems/determinate-nix
 [detsys]: https://determinate.systems
 [dnixd]: https://docs.determinate.systems/determinate-nix#determinate-nixd
+[ec2]: https://aws.amazon.com/ec2
 [fh]: https://docs.determinate.systems/flakehub/cli
 [fh-apply]: https://docs.determinate.systems/flakehub/cli#apply
 [flakehub]: https://flakehub.com
 [nix]: https://docs.determinate.systems/determinate-nix
 [nixos]: https://zero-to-nix.com/concepts/nixos
+[opentofu]: https://opentofu.org
 [private-flakes]: https://docs.determinate.systems/flakehub/private-flakes
+[ssm]: https://aws.amazon.com/systems-manager
 [sts]: https://docs.aws.amazon.com/STS/latest/APIReference/welcome.html
 [terraform]: https://terraform.io
