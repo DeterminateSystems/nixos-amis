@@ -61,9 +61,9 @@
 
       devShells = forAllSystems ({ system, pkgs, lib, ... }: {
         default = pkgs.mkShell {
-          packages = [
-            pkgs.lychee
-            pkgs.nixpkgs-fmt
+          packages = with pkgs; [
+            lychee
+            nixpkgs-fmt
           ] ++ lib.optionals (builtins.elem system linuxSystems) [
             inputs.nixos-amis.packages.${system}.upload-ami
           ];
