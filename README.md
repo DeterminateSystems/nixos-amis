@@ -45,7 +45,7 @@ You can deploy [EC2] instances based on the Determinate Nix AMIs using a variety
 
 ### Terraform
 
-> [!SUCCESS]
+> [!NOTE]
 > The Terraform configuration below is compatible with [OpenTofu] as well.
 
 You can use our official AMI for NixOS in a [Terraform] configuration like this:
