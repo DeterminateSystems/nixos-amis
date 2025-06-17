@@ -176,14 +176,8 @@ jobs:
           details: NixOS AMIs Update - ${{ needs.build-ami.result }}
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
       - name: Notify Slack
-        uses: slackapi/slack-github-action@v2.1.0
+        uses: DeterminateSystems/boop@main
         with:
-          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
-          webhook-type: incoming-webhook
-          payload: |
-            text: "*NixOS AMI Update*: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
-            blocks:
-              - type: "section"
-                text:
-                  type: "mrkdwn"
-                  text: "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+          slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          title: "*NixOS AMI Update*: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+          body: "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
