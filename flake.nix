@@ -4,8 +4,7 @@
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
     fh.url = "https://flakehub.com/f/DeterminateSystems/fh/0.1.*";
     flake-schemas.url = "https://flakehub.com/f/DeterminateSystems/flake-schemas/0.1.5";
-    # nixos-amis.url = "https://flakehub.com/f/NixOS/amis/0.1.*";
-    nixos-amis.url = "github:DeterminateSystems/amis/push-xrqnyrsmvxkr";
+    nixos-amis.url = "https://flakehub.com/f/NixOS/amis/0.1.*";
   };
 
   outputs = { self, ... }@inputs:
