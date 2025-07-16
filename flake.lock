@@ -225,18 +225,16 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1752178938,
+        "lastModified": 1752399846,
         "narHash": "sha256-m3rjcpmsKP9xDapaxGO4n4LiwHhAKoicoazb6dZHQPU=",
-        "owner": "DeterminateSystems",
-        "repo": "amis",
-        "rev": "7731cf7c796bb67013f2064415997009f36c4332",
-        "type": "github"
+        "rev": "5170fdba9a27f1472cb51910dec86f37c4b62c3c",
+        "revCount": 274,
+        "type": "tarball",
+        "url": "https://api.flakehub.com/f/pinned/NixOS/amis/0.1.274%2Brev-5170fdba9a27f1472cb51910dec86f37c4b62c3c/0198032e-c2e5-79da-8437-6714dd4d3026/source.tar.gz"
       },
       "original": {
-        "owner": "DeterminateSystems",
-        "ref": "push-xrqnyrsmvxkr",
-        "repo": "amis",
-        "type": "github"
+        "type": "tarball",
+        "url": "https://flakehub.com/f/NixOS/amis/0.1.%2A"
       }
     },
     "nixpkgs": {
