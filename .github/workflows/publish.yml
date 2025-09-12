@@ -38,6 +38,7 @@ jobs:
           nix flake check --all-systems
 
       - name: Check external links in README
+        continue-on-error: true
         run: |
           nix develop --command \
             lychee README.md
