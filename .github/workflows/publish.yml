@@ -40,7 +40,7 @@ jobs:
       - name: Check external links in README
         run: |
           nix develop --command \
-            lychee README.md
+            check-external-links
 
       - name: check image label
         run: |

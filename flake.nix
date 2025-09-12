@@ -63,6 +63,17 @@
         default = pkgs.mkShell {
           packages = with pkgs; [
             lychee
+            (writeShellApplication {
+              name = "check-external-links";
+              runtimeInputs = with pkgs; [ lychee ];
+              text = ''
+                lychee \
+                  --cache \
+                  --max-concurrency 2 \ # prevents 429 errors
+                  --verbose \
+                  README.me
+              '';
+            })
             nixpkgs-fmt
           ] ++ lib.optionals (builtins.elem system linuxSystems) [
             inputs.nixos-amis.packages.${system}.upload-ami

@@ -85,4 +85,4 @@ data "aws_ami" "detsys_nixos" {
 [private-flakes]: https://docs.determinate.systems/flakehub/private-flakes
 [ssm]: https://aws.amazon.com/systems-manager
 [sts]: https://docs.aws.amazon.com/STS/latest/APIReference/welcome.html
-[terraform]: https://terraform.io
+[terraform]: https://developer.hashicorp.com/terraform
