@@ -31,7 +31,7 @@ jobs:
 
       - name: Check Nix formatting
         run: |
-          nix develop --command nixpkgs-fmt --check flake.nix
+          git ls-files '*.nix' | xargs nix develop --command nixfmt --check
 
       - name: nix flake check
         run: |
@@ -41,7 +41,7 @@ jobs:
         continue-on-error: true
         run: |
           nix develop --command \
-            lychee README.md
+            check-external-links
 
       - name: check image label
         run: |
