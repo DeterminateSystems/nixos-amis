@@ -26,7 +26,7 @@ On both systems, the AMIs have these tools installed:
 
   ```shell
   determinate-nixd login aws
-  fh apply nixos "my-org/my-flake/*#nixosConfigurations.my-nixos-configuration-output"
+  sudo fh apply nixos "my-org/my-flake/*#nixosConfigurations.my-nixos-configuration-output"
   ```
 
 ## Example
