@@ -159,7 +159,7 @@
       },
       "original": {
         "type": "tarball",
-        "url": "https://flakehub.com/f/DeterminateSystems/flake-schemas/0.1.5"
+        "url": "https://flakehub.com/f/DeterminateSystems/flake-schemas/0.1"
       }
     },
     "git-hooks-nix": {
