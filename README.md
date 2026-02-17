@@ -29,7 +29,7 @@ On both systems, the AMIs have these tools installed:
   fh apply nixos "my-org/my-flake/*#nixosConfigurations.my-nixos-configuration-output"
   ```
 
-### Lifespan
+## Lifecycle
 
 Every AMI is marked as deprecated after 90 days.
 Deprecated AMIs are deleted after 90 days.
