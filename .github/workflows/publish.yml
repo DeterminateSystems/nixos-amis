@@ -140,6 +140,23 @@ jobs:
             --copy-to-regions \
             --public
 
+  prune-old-amis:
+    name: Prune old AMIs
+    runs-on: ubuntu-latest
+    # environment: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') && 'production' || '' }}
+    environment: 'production'
+
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+      - name: Delete old AMIs
+        # if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          nix develop --command delete-deprecated-images --dry-run
+
   cache-dev-environment:
     name: Cache Nix development environment in FlakeHub Cache
     runs-on: ${{ matrix.system.runner }}
