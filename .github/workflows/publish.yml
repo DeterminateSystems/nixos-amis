@@ -163,7 +163,7 @@ jobs:
       - name: Delete old AMIs
         # if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
-          nix develop --command delete-deprecated-images --dry-run --grace-period 730
+          nix develop --command delete-deprecated-images --dry-run --grace-period 365
 
   cache-dev-environment:
     name: Cache Nix development environment in FlakeHub Cache
