@@ -152,6 +152,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main
+
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        # if: github.event_name == 'merge_group' || github.event_name == 'push'
+        with:
+          role-to-assume: arn:aws:iam::535002876703:role/upload-ami
+          aws-region: us-east-2
+          
       - name: Delete old AMIs
         # if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
