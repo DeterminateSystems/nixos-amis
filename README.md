@@ -29,6 +29,13 @@ On both systems, the AMIs have these tools installed:
   fh apply nixos "my-org/my-flake/*#nixosConfigurations.my-nixos-configuration-output"
   ```
 
+## Lifecycle
+
+Every AMI is marked as deprecated after 90 days.
+Deprecated AMIs are deleted after 90 days.
+
+In other words, each AMI is available for a total of 180 days.
+
 ## Example
 
 For a detailed example of deploying NixOS systems to [EC2] using the Determinate Nix AMIs, see our [demo] repo.

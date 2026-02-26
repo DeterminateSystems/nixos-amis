@@ -140,6 +140,30 @@ jobs:
             --copy-to-regions \
             --public
 
+  prune-old-amis:
+    name: Prune old AMIs
+    runs-on: ubuntu-latest
+    environment: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') && 'production' || '' }}
+
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        if: github.event_name == 'merge_group' || github.event_name == 'push'
+        with:
+          role-to-assume: arn:aws:iam::535002876703:role/upload-ami
+          aws-region: us-east-2
+
+      - name: Delete old AMIs
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          nix develop --command delete-deprecated-images --grace-period 90
+
   cache-dev-environment:
     name: Cache Nix development environment in FlakeHub Cache
     runs-on: ${{ matrix.system.runner }}
