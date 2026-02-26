@@ -95,7 +95,7 @@
               with pkgs;
               [
                 lychee
-                nixpkgs-fmt
+                nixfmt
               ]
               ++ lib.optionals (builtins.elem system linuxSystems) [
                 inputs.nixos-amis.packages.${system}.upload-ami
