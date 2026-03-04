@@ -70,7 +70,7 @@ data "aws_ami" "detsys_nixos" {
 
   filter {
     name   = "architecture"
-    # value = [ "arm64" ]
+    # values = [ "arm64" ]
     values = ["x86_64"]
   }
 }
@@ -96,7 +96,7 @@ data "aws_ami" "detsys_nixos" {
 
   filter {
     name   = "architecture"
-    # value = [ "arm64" ]
+    # values = [ "arm64" ]
     values = ["x86_64"]
   }
 }
@@ -122,7 +122,7 @@ data "aws_ami" "detsys_nixos" {
 
   filter {
     name   = "architecture"
-    # value = [ "arm64" ]
+    # values = [ "arm64" ]
     values = ["x86_64"]
   }
 }
