@@ -237,3 +237,20 @@ jobs:
                 text:
                   type: "mrkdwn"
                   text: "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+
+  success:
+    runs-on: ubuntu-latest
+    needs:
+      - nix-checks
+      - build-ami
+      - prune-old-amis
+      - cache-dev-environment
+    if: ${{ always() }}
+    steps:
+      - run: "true"
+      - run: |
+          echo "A dependent in the build matrix failed."
+          exit 1
+        if: |
+          contains(needs.*.result, 'failure') ||
+          contains(needs.*.result, 'cancelled')
