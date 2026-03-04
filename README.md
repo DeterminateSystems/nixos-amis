@@ -61,17 +61,17 @@ You can use our official AMI for NixOS in a [Terraform] configuration like this:
 data "aws_ami" "detsys_nixos" {
   most_recent = true
 
-  owners      = ["535002876703"]
+  owners      = [ "535002876703" ]
 
   filter {
     name   = "name"
-    values = ["determinate/nixos/epoch-1/*"]
+    values = [ "determinate/nixos/epoch-1/*" ]
   }
 
   filter {
     name   = "architecture"
     # values = [ "arm64" ]
-    values = ["x86_64"]
+    values = [ "x86_64" ]
   }
 }
 ```
@@ -87,17 +87,17 @@ You can use our official AMI for NixOS in a [Terraform] configuration like this:
 data "aws_ami" "detsys_nixos" {
   most_recent = true
 
-  owners      = ["579351485434"]
+  owners      = [ "579351485434" ]
 
   filter {
     name   = "name"
-    values = ["determinate/nixos/epoch-1/*"]
+    values = [ "determinate/nixos/epoch-1/*" ]
   }
 
   filter {
     name   = "architecture"
     # values = [ "arm64" ]
-    values = ["x86_64"]
+    values = [ "x86_64" ]
   }
 }
 ```
@@ -113,17 +113,17 @@ You can use our official AMI for NixOS in a [Terraform] configuration like this:
 data "aws_ami" "detsys_nixos" {
   most_recent = true
 
-  owners      = ["111921064076"]
+  owners      = [ "111921064076" ]
 
   filter {
     name   = "name"
-    values = ["determinate/nixos/epoch-1/*"]
+    values = [ "determinate/nixos/epoch-1/*" ]
   }
 
   filter {
     name   = "architecture"
     # values = [ "arm64" ]
-    values = ["x86_64"]
+    values = [ "x86_64" ]
   }
 }
 ```
