@@ -59,6 +59,7 @@ jobs:
       contents: read
       id-token: write
     strategy:
+      fail-fast: false
       matrix:
         system:
           - nix-system: x86_64-linux
@@ -160,6 +161,7 @@ jobs:
       id-token: write
 
     strategy:
+      fail-fast: false
       matrix:
         partition:
           - role: arn:aws:iam::535002876703:role/upload-ami
@@ -191,6 +193,7 @@ jobs:
       contents: read
       id-token: write
     strategy:
+      fail-fast: false
       matrix:
         system:
           - nix-system: x86_64-linux
