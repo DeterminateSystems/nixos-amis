@@ -150,7 +150,8 @@ jobs:
             --s3-bucket "${{ matrix.partition.bucket }}" \
             --run-id "${{ github.run_id }}-${{ github.run_attempt }}" \
             --copy-to-regions \
-            --public
+            --public \
+            --best-effort-region me-central-1
 
   prune-old-amis:
     name: Prune old AMIs

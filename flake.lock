@@ -215,16 +215,18 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1771826194,
-        "narHash": "sha256-VjGvRUHKHInTpNp8F1UFZhvdRPsJyWFsJ/lYrssPeU8=",
-        "rev": "eafdcf702664a3cb05a9af6399ef897899e7e4f0",
-        "revCount": 310,
-        "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/NixOS/amis/0.1.310%2Brev-eafdcf702664a3cb05a9af6399ef897899e7e4f0/019c8915-0c03-7119-aa73-18c9fdedefb3/source.tar.gz"
+        "lastModified": 1772653533,
+        "narHash": "sha256-dlIMOsXm28/fG8hK0h7ZK24IgxpH4QRXo57ffw0Z2GE=",
+        "owner": "DeterminateSystems",
+        "repo": "amis",
+        "rev": "9822e4fdb7c7aca081a5211d2923e824f65da26c",
+        "type": "github"
       },
       "original": {
-        "type": "tarball",
-        "url": "https://flakehub.com/f/NixOS/amis/0.1.%2A"
+        "owner": "DeterminateSystems",
+        "ref": "grahamc/ignore-me-central-1",
+        "repo": "amis",
+        "type": "github"
       }
     },
     "nixpkgs": {
@@ -303,11 +305,11 @@
     },
     "nixpkgs_4": {
       "locked": {
-        "lastModified": 1771207753,
-        "narHash": "sha256-7o+iRF++GO/gGrgrRMlnld2V/3QIzpdwMKViVkHtMEQ=",
-        "rev": "d1c15b7d5806069da59e819999d70e1cec0760bf",
+        "lastModified": 1772173633,
+        "narHash": "sha256-BHKMR414WpfUddNyUtx2GR1VPl0R9sWGQs/opgYm9rc=",
+        "rev": "c0f3d81a7ddbc2b1332be0d8481a672b4f6004d6",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixpkgs/nixpkgs-26.05pre946960.d1c15b7d5806/nixexprs.tar.xz"
+        "url": "https://releases.nixos.org/nixpkgs/nixpkgs-26.05pre955350.c0f3d81a7ddb/nixexprs.tar.xz"
       },
       "original": {
         "type": "tarball",
