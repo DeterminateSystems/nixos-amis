@@ -215,11 +215,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1772653533,
-        "narHash": "sha256-dlIMOsXm28/fG8hK0h7ZK24IgxpH4QRXo57ffw0Z2GE=",
+        "lastModified": 1772654010,
+        "narHash": "sha256-NRzG4ZB7Y9D59qEpV7z6JRb6h5nybD4x+Ze1eA+ro5Q=",
         "owner": "DeterminateSystems",
         "repo": "amis",
-        "rev": "9822e4fdb7c7aca081a5211d2923e824f65da26c",
+        "rev": "a65e905cb1e10902e489562561659f4d6c5301f7",
         "type": "github"
       },
       "original": {
