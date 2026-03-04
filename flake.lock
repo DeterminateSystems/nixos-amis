@@ -150,16 +150,16 @@
     },
     "flake-schemas": {
       "locked": {
-        "lastModified": 1721999734,
-        "narHash": "sha256-G5CxYeJVm4lcEtaO87LKzOsVnWeTcHGKbKxNamNWgOw=",
-        "rev": "0a5c42297d870156d9c57d8f99e476b738dcd982",
-        "revCount": 75,
+        "lastModified": 1772200446,
+        "narHash": "sha256-hcUPpu25+VLvQsf961cu4zTeA//Ab35MaMjqSS/Ojqc=",
+        "rev": "d6a6b7cfa25bea552c197c9e227cd293ff801dbb",
+        "revCount": 115,
         "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/DeterminateSystems/flake-schemas/0.1.5/0190ef2f-61e0-794b-ba14-e82f225e55e6/source.tar.gz"
+        "url": "https://api.flakehub.com/f/pinned/DeterminateSystems/flake-schemas/0.3.0/019c9f61-e746-760e-a1fe-53f05b10d026/source.tar.gz"
       },
       "original": {
         "type": "tarball",
-        "url": "https://flakehub.com/f/DeterminateSystems/flake-schemas/0.1.5"
+        "url": "https://flakehub.com/f/DeterminateSystems/flake-schemas/0.3"
       }
     },
     "git-hooks-nix": {
@@ -215,16 +215,18 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1771826194,
-        "narHash": "sha256-VjGvRUHKHInTpNp8F1UFZhvdRPsJyWFsJ/lYrssPeU8=",
-        "rev": "eafdcf702664a3cb05a9af6399ef897899e7e4f0",
-        "revCount": 310,
-        "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/NixOS/amis/0.1.310%2Brev-eafdcf702664a3cb05a9af6399ef897899e7e4f0/019c8915-0c03-7119-aa73-18c9fdedefb3/source.tar.gz"
+        "lastModified": 1772655210,
+        "narHash": "sha256-n8vDLBXwOL5xczrQo715v/8De6/3RaXHlHtXwqiY2/c=",
+        "owner": "DeterminateSystems",
+        "repo": "amis",
+        "rev": "8e967e0a427e156ac483e2a70d1565275238cb90",
+        "type": "github"
       },
       "original": {
-        "type": "tarball",
-        "url": "https://flakehub.com/f/NixOS/amis/0.1.%2A"
+        "owner": "DeterminateSystems",
+        "ref": "grahamc/ignore-me-central-1",
+        "repo": "amis",
+        "type": "github"
       }
     },
     "nixpkgs": {
@@ -303,11 +305,11 @@
     },
     "nixpkgs_4": {
       "locked": {
-        "lastModified": 1771207753,
-        "narHash": "sha256-7o+iRF++GO/gGrgrRMlnld2V/3QIzpdwMKViVkHtMEQ=",
-        "rev": "d1c15b7d5806069da59e819999d70e1cec0760bf",
+        "lastModified": 1772173633,
+        "narHash": "sha256-BHKMR414WpfUddNyUtx2GR1VPl0R9sWGQs/opgYm9rc=",
+        "rev": "c0f3d81a7ddbc2b1332be0d8481a672b4f6004d6",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixpkgs/nixpkgs-26.05pre946960.d1c15b7d5806/nixexprs.tar.xz"
+        "url": "https://releases.nixos.org/nixpkgs/nixpkgs-26.05pre955350.c0f3d81a7ddb/nixexprs.tar.xz"
       },
       "original": {
         "type": "tarball",

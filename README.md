@@ -70,6 +70,59 @@ data "aws_ami" "detsys_nixos" {
 
   filter {
     name   = "architecture"
+    # value = [ "arm64" ]
+    values = ["x86_64"]
+  }
+}
+```
+
+#### Terraform for users in AWS GovCloud
+
+> [!NOTE]
+> The Terraform configuration below is compatible with [OpenTofu] as well.
+
+You can use our official AMI for NixOS in a [Terraform] configuration like this:
+
+```hcl
+data "aws_ami" "detsys_nixos" {
+  most_recent = true
+
+  owners      = ["579351485434"]
+
+  filter {
+    name   = "name"
+    values = ["determinate/nixos/epoch-1/*"]
+  }
+
+  filter {
+    name   = "architecture"
+    # value = [ "arm64" ]
+    values = ["x86_64"]
+  }
+}
+```
+
+#### Terraform for users in AWS European Sovereign Cloud
+
+> [!NOTE]
+> The Terraform configuration below is compatible with [OpenTofu] as well.
+
+You can use our official AMI for NixOS in a [Terraform] configuration like this:
+
+```hcl
+data "aws_ami" "detsys_nixos" {
+  most_recent = true
+
+  owners      = ["111921064076"]
+
+  filter {
+    name   = "name"
+    values = ["determinate/nixos/epoch-1/*"]
+  }
+
+  filter {
+    name   = "architecture"
+    # value = [ "arm64" ]
     values = ["x86_64"]
   }
 }
