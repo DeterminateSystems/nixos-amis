@@ -158,6 +158,17 @@ jobs:
     permissions:
       contents: read
       id-token: write
+
+    strategy:
+      matrix:
+        partition:
+          - role: arn:aws:iam::535002876703:role/upload-ami
+            region: us-east-2
+          - role: arn:aws-us-gov:iam::579351485434:role/upload-ami
+            region: us-gov-west-1
+          - role: arn:aws-eusc:iam::111921064076:role/upload-ami
+            region: eusc-de-east-1
+
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main
@@ -165,8 +176,8 @@ jobs:
       - uses: aws-actions/configure-aws-credentials@v4
         if: github.event_name == 'merge_group' || github.event_name == 'push'
         with:
-          role-to-assume: arn:aws:iam::535002876703:role/upload-ami
-          aws-region: us-east-2
+          role-to-assume: ${{ matrix.partition.role }}
+          aws-region: ${{ matrix.partition.region }}
 
       - name: Delete old AMIs
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
