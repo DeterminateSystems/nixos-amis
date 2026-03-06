@@ -112,6 +112,14 @@
       );
 
       schemas = {
+        inherit (inputs.flake-schemas.schemas)
+          apps
+          devShells
+          nixosConfigurations
+          schemas
+          ;
+      }
+      // {
         diskImages = {
           version = 1;
           doc = ''
