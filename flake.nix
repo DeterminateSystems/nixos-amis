@@ -134,7 +134,7 @@
           version = 1;
           doc = "The `epoch` output provides a simple string value that's meant to be updated whenever there are breaking changes to the AMIs.";
           inventory = output: {
-            what = "Epoch string";
+            what = "Determinate NixOS AMIs epoch ${output}";
             shortDescription = "A string representing the epoch value: ${output}";
             evalChecks.isString = builtins.isString output;
           };
