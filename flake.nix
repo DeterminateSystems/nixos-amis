@@ -96,7 +96,7 @@
               with pkgs;
               [
                 lychee
-                nixfmt
+                self.formatter.${system}
               ]
               ++ lib.optionals (builtins.elem system linuxSystems) [
                 inputs.nixos-amis.packages.${system}.upload-ami
@@ -104,6 +104,8 @@
           };
         }
       );
+
+      formatter = forAllSystems ({ pkgs, ... }: pkgs.nixfmt);
 
       apps = forLinuxSystems (
         { system, ... }:
@@ -116,6 +118,7 @@
         inherit (inputs.flake-schemas.schemas)
           apps
           devShells
+          formatter
           nixosConfigurations
           schemas
           ;
