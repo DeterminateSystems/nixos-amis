@@ -138,7 +138,7 @@
           inventory = output: {
             what = "Epoch string";
             shortDescription = "A string representing the epoch value: ${output}";
-            evalChecks.isString = e: builtins.isString e;
+            evalChecks.isString = builtins.isString output;
           };
         };
       };
