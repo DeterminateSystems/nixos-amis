@@ -3,8 +3,9 @@
     nixpkgs.url = "https://flakehub.com/f/nixos/nixpkgs/0.1.*";
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
     fh.url = "https://flakehub.com/f/DeterminateSystems/fh/0.1.*";
-    nixos-amis.url = "https://flakehub.com/f/NixOS/amis/0.1.*";
-    flake-schemas.url = "https://flakehub.com/f/DeterminateSystems/flake-schemas/0";
+    flake-schemas.url = "https://flakehub.com/f/DeterminateSystems/flake-schemas/0.3";
+    nixos-amis.url = # "https://flakehub.com/f/NixOS/amis/0.1.*";
+      "github:DeterminateSystems/amis/grahamc/ignore-me-central-1";
   };
 
   outputs =

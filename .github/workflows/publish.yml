@@ -56,15 +56,25 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    env:
-      s3-bucket: detsys-nixos-images-20240916205705854200000001
     strategy:
+      fail-fast: false
       matrix:
         system:
           - nix-system: x86_64-linux
             runner: ubuntu-latest
           - nix-system: aarch64-linux
             runner: UbuntuLatest32Cores128GArm
+        partition:
+          - role: arn:aws:iam::535002876703:role/upload-ami
+            region: us-east-2
+            bucket: detsys-nixos-images-20240916205705854200000001
+          - role: arn:aws-us-gov:iam::579351485434:role/upload-ami
+            region: us-gov-west-1
+            bucket: detsys-nixos-images-20260303190747195900000001
+          - role: arn:aws-eusc:iam::111921064076:role/upload-ami
+            region: eusc-de-east-1
+            bucket: detsys-nixos-images-20260304164532954800000001
+
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main
@@ -85,8 +95,8 @@ jobs:
       - uses: aws-actions/configure-aws-credentials@v4
         if: github.event_name == 'merge_group' || github.event_name == 'push'
         with:
-          role-to-assume: arn:aws:iam::535002876703:role/upload-ami
-          aws-region: us-east-2
+          role-to-assume: ${{ matrix.partition.role }}
+          aws-region: ${{ matrix.partition.region }}
 
       - name: Upload Smoke test AMI
         if: github.event_name == 'merge_group' || github.event_name == 'push'
@@ -97,7 +107,7 @@ jobs:
           image_ids=$(nix develop --command upload-ami \
             --image-info "./result/nix-support/image-info.json" \
             --prefix "${prefix}" \
-            --s3-bucket "${{ env.s3-bucket }}" \
+            --s3-bucket "${{ matrix.partition.bucket }}" \
             --run-id '${{ steps.build-disk-image.outputs.suffix }}')
 
           echo "image_ids=$image_ids" >> "$GITHUB_OUTPUT"
@@ -108,7 +118,7 @@ jobs:
         # NOTE: make sure smoke test isn't cancelled so that the instance gets cleaned up
         run: |
           image_ids='${{ steps.upload-smoke-test-ami.outputs.image_ids }}'
-          image_id=$(echo "$image_ids" | jq -r '.["us-east-2"]')
+          image_id=$(echo "$image_ids" | jq -r '.["${{ matrix.partition.region }}"]')
           nix run .#smoke-test -- \
             --image-id "$image_id" \
             --run-id "${{ github.run_id }}-${{ github.run_attempt }}" \
@@ -119,10 +129,11 @@ jobs:
         if: ${{ cancelled() && (github.event_name == 'merge_group' || github.event_name == 'push') }}
         run: |
           image_ids='${{ steps.upload-smoke-test-ami.outputs.image_ids }}'
-          image_id=$(echo "$image_ids" | jq -r '.["us-east-2"]')
+          image_id=$(echo "$image_ids" | jq -r '.["${{ matrix.partition.region }}"]')
           nix run .#smoke-test -- \
             --image-id "$image_id" \
             --run-id "${{ github.run_id }}-${{ github.run_attempt }}" \
+            --no-spot \
             --cancel
 
       - name: Upload AMIs to all available regions
@@ -133,10 +144,11 @@ jobs:
           nix develop --command upload-ami \
             --image-info "./result/nix-support/image-info.json" \
             --prefix "${prefix}" \
-            --s3-bucket "detsys-nixos-images-20240916205705854200000001" \
+            --s3-bucket "${{ matrix.partition.bucket }}" \
             --run-id "${{ github.run_id }}-${{ github.run_attempt }}" \
             --copy-to-regions \
-            --public
+            --public \
+            --best-effort-region me-central-1
 
   prune-old-amis:
     name: Prune old AMIs
@@ -146,16 +158,27 @@ jobs:
     permissions:
       contents: read
       id-token: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        partition:
+          - role: arn:aws:iam::535002876703:role/upload-ami
+            region: us-east-2
+          - role: arn:aws-us-gov:iam::579351485434:role/upload-ami
+            region: us-gov-west-1
+          - role: arn:aws-eusc:iam::111921064076:role/upload-ami
+            region: eusc-de-east-1
+
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main
 
-
       - uses: aws-actions/configure-aws-credentials@v4
         if: github.event_name == 'merge_group' || github.event_name == 'push'
         with:
-          role-to-assume: arn:aws:iam::535002876703:role/upload-ami
-          aws-region: us-east-2
+          role-to-assume: ${{ matrix.partition.role }}
+          aws-region: ${{ matrix.partition.region }}
 
       - name: Delete old AMIs
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -169,6 +192,7 @@ jobs:
       contents: read
       id-token: write
     strategy:
+      fail-fast: false
       matrix:
         system:
           - nix-system: x86_64-linux
@@ -210,3 +234,20 @@ jobs:
                 text:
                   type: "mrkdwn"
                   text: "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+
+  success:
+    runs-on: ubuntu-latest
+    needs:
+      - nix-checks
+      - build-ami
+      - prune-old-amis
+      - cache-dev-environment
+    if: ${{ always() }}
+    steps:
+      - run: "true"
+      - run: |
+          echo "A dependent in the build matrix failed."
+          exit 1
+        if: |
+          contains(needs.*.result, 'failure') ||
+          contains(needs.*.result, 'cancelled')
