@@ -23,15 +23,13 @@ jobs:
         with:
           fail-mode: false
 
-      - uses: DeterminateSystems/nix-installer-action@main
-        with:
-          determinate: true
+      - uses: DeterminateSystems/determinate-nix-action@main
 
       - uses: DeterminateSystems/flakehub-cache-action@main
 
       - name: Check Nix formatting
         run: |
-          nix develop --command nixpkgs-fmt --check flake.nix
+          nix develop --command  git ls-files -z '*.nix' | xargs -0 -r nix develop --command nixfmt --check
 
       - name: nix flake check
         run: |
