@@ -11,6 +11,8 @@
   outputs =
     { self, ... }@inputs:
     let
+      inherit (inputs.nixpkgs) lib;
+
       linuxSystems = [
         "x86_64-linux"
         "aarch64-linux"
@@ -21,14 +23,13 @@
 
       forSystems =
         systems: f:
-        inputs.nixpkgs.lib.genAttrs systems (
+        lib.genAttrs systems (
           system:
           f {
             inherit system;
             pkgs = import inputs.nixpkgs {
               inherit system;
             };
-            lib = inputs.nixpkgs.lib;
           }
         );
 
@@ -43,7 +44,6 @@
         {
           system,
           pkgs,
-          lib,
           ...
         }:
         lib.nixosSystem {
@@ -86,7 +86,6 @@
         {
           system,
           pkgs,
-          lib,
           ...
         }:
         {
