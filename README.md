@@ -107,13 +107,17 @@ data "aws_ami" "detsys_nixos" {
 > [!NOTE]
 > The Terraform configuration below is compatible with [OpenTofu] as well.
 
+> [!NOTE]
+> We previously published EUSC AMIs to the AWS account `111921064076`.
+> The correct AWS account for the European Sovereign Cloud AMIs is `129194717446` as of 2026-04-08.
+
 You can use our official AMI for NixOS in a [Terraform] configuration like this:
 
 ```hcl
 data "aws_ami" "detsys_nixos" {
   most_recent = true
 
-  owners      = [ "111921064076" ]
+  owners      = [ "129194717446" ]
 
   filter {
     name   = "name"
