@@ -71,9 +71,9 @@ jobs:
           - role: arn:aws-us-gov:iam::579351485434:role/upload-ami
             region: us-gov-west-1
             bucket: detsys-nixos-images-20260303190747195900000001
-          - role: arn:aws-eusc:iam::111921064076:role/upload-ami
+          - role: arn:aws-eusc:iam::129194717446:role/upload-ami
             region: eusc-de-east-1
-            bucket: detsys-nixos-images-20260304164532954800000001
+            bucket: detsys-nixos-images-20260409030044091900000001
 
     steps:
       - uses: actions/checkout@v4
@@ -148,7 +148,8 @@ jobs:
             --run-id "${{ github.run_id }}-${{ github.run_attempt }}" \
             --copy-to-regions \
             --public \
-            --best-effort-region me-central-1
+            --best-effort-region me-central-1 \
+            --best-effort-region me-south-1
 
   prune-old-amis:
     name: Prune old AMIs
@@ -167,7 +168,7 @@ jobs:
             region: us-east-2
           - role: arn:aws-us-gov:iam::579351485434:role/upload-ami
             region: us-gov-west-1
-          - role: arn:aws-eusc:iam::111921064076:role/upload-ami
+          - role: arn:aws-eusc:iam::129194717446:role/upload-ami
             region: eusc-de-east-1
 
     steps:
