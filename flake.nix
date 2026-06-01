@@ -3,7 +3,7 @@
     nixpkgs.url = "https://flakehub.com/f/nixos/nixpkgs/0.1.*";
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
     fh.url = "https://flakehub.com/f/DeterminateSystems/fh/0.1.*";
-    flake-schemas.url = "https://flakehub.com/f/DeterminateSystems/flake-schemas/0.3";
+    flake-schemas.url = "https://flakehub.com/f/DeterminateSystems/flake-schemas/0";
     nixos-amis.url = # "https://flakehub.com/f/NixOS/amis/0.1.*";
       "github:DeterminateSystems/amis/grahamc/ignore-me-central-1";
   };
@@ -112,16 +112,7 @@
         }
       );
 
-      schemas = {
-        inherit (inputs.flake-schemas.schemas)
-          apps
-          devShells
-          formatter
-          nixosConfigurations
-          schemas
-          ;
-      }
-      // {
+      exportedSchemas = {
         diskImages = {
           version = 1;
           doc = ''
@@ -139,6 +130,17 @@
             evalChecks.isString = builtins.isString output;
           };
         };
+      };
+
+      schemas = self.exportedSchemas // {
+        inherit (inputs.flake-schemas.exportedSchemas)
+          apps
+          devShells
+          exportedSchemas
+          formatter
+          nixosConfigurations
+          schemas
+          ;
       };
     };
 }
